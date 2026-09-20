@@ -1,0 +1,322 @@
+{% extends "user/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<style>
+  .profile-wrapper {
+    max-width: 850px;
+    margin: 40px auto;
+  }
+
+  .profile-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 30px;
+    box-shadow: 0 2px 8px rgba(15, 36, 57, 0.06);
+  }
+
+  .profile-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .avatar-circle {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    background-color: var(--primary-navy);
+    color: var(--white-cream);
+    font-size: 26px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 20px;
+  }
+
+  .profile-info-header h2 {
+    margin: 0 0 5px;
+    color: var(--primary-navy);
+    font-size: 22px;
+    font-weight: 700;
+  }
+
+  .profile-info-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+  }
+
+  .profile-section-title {
+    color: var(--primary-navy);
+    font-size: 18px;
+    font-weight: 700;
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .profile-info {
+    margin-bottom: 25px;
+  }
+
+  .profile-row {
+    display: flex;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .profile-label {
+    width: 35%;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .profile-value {
+    width: 65%;
+    color: #333333;
+  }
+
+  .profile-edit {
+    border-top: 1px solid #f1f5f9;
+    padding-top: 30px;
+    margin-top: 30px;
+  }
+
+  .profile-card label {
+    color: var(--primary-navy);
+    font-weight: 600;
+  }
+
+  .profile-card input.form-control {
+    border-radius: 4px;
+    border: 1px solid #cbd5e1;
+    height: 42px;
+    box-shadow: none;
+  }
+
+  .profile-card input.form-control:focus {
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 2px rgba(49, 145, 99, 0.15);
+  }
+
+  .account-actions {
+    border-top: 1px solid #f1f5f9;
+    margin-top: 30px;
+    padding-top: 25px;
+  }
+
+  @media (max-width: 600px) {
+    .profile-wrapper {
+      margin: 20px auto;
+    }
+
+    .profile-card {
+      padding: 20px;
+    }
+
+    .profile-header {
+      align-items: flex-start;
+    }
+
+    .avatar-circle {
+      width: 52px;
+      height: 52px;
+      font-size: 21px;
+      margin-right: 15px;
+    }
+
+    .profile-row {
+      display: block;
+    }
+
+    .profile-label,
+    .profile-value {
+      width: 100%;
+    }
+
+    .profile-value {
+      margin-top: 5px;
+    }
+  }
+</style>
+
+
+<div class="profile-wrapper">
+
+  <div class="profile-card">
+
+    <!-- Profile Header -->
+    <div class="profile-header">
+
+      <div class="avatar-circle">
+        {{ user.username|slice:":1"|upper }}
+      </div>
+
+      <div class="profile-info-header">
+
+        <h2>
+          {% if user.get_full_name %}
+            {{ user.get_full_name }}
+          {% else %}
+            {{ user.username }}
+          {% endif %}
+        </h2>
+
+        <p>
+          <i class="fa fa-envelope-o"></i>
+          {{ user.email|default:"No email provided" }}
+        </p>
+
+      </div>
+
+    </div>
+
+
+    <!-- Profile Information -->
+    <div class="profile-info">
+
+      <h3 class="profile-section-title">
+        <i class="fa fa-user"></i>
+        Account Information
+      </h3>
+
+      <div class="profile-row">
+        <div class="profile-label">
+          Username
+        </div>
+
+        <div class="profile-value">
+          {{ user.username }}
+        </div>
+      </div>
+
+
+      <div class="profile-row">
+        <div class="profile-label">
+          First Name
+        </div>
+
+        <div class="profile-value">
+          {% if user.first_name %}
+            {{ user.first_name }}
+          {% else %}
+            <span class="text-muted">Not specified</span>
+          {% endif %}
+        </div>
+      </div>
+
+
+      <div class="profile-row">
+        <div class="profile-label">
+          Last Name
+        </div>
+
+        <div class="profile-value">
+          {% if user.last_name %}
+            {{ user.last_name }}
+          {% else %}
+            <span class="text-muted">Not specified</span>
+          {% endif %}
+        </div>
+      </div>
+
+
+      <div class="profile-row">
+        <div class="profile-label">
+          Email Address
+        </div>
+
+        <div class="profile-value">
+          {% if user.email %}
+            {{ user.email }}
+          {% else %}
+            <span class="text-muted">Not specified</span>
+          {% endif %}
+        </div>
+      </div>
+
+
+      <div class="profile-row">
+        <div class="profile-label">
+          Account Created
+        </div>
+
+        <div class="profile-value">
+          {{ user.date_joined|date:"F d, Y" }}
+        </div>
+      </div>
+
+    </div>
+
+
+    <!-- Update Profile -->
+    <div class="profile-edit">
+
+      <h3 class="profile-section-title">
+        <i class="fa fa-pencil"></i>
+        Update Profile
+      </h3>
+
+      <form method="POST" id="profileForm">
+
+        {% csrf_token %}
+
+        {{ form|crispy }}
+
+        <button
+          type="submit"
+          id="saveProfileBtn"
+          class="btn btn-custom-primary">
+
+          <i class="fa fa-check"></i>
+          Save Changes
+
+        </button>
+
+      </form>
+
+    </div>
+
+
+    <!-- Account Actions -->
+    <div class="account-actions">
+
+      <a
+        href="{% url 'logout' %}"
+        class="btn btn-custom-secondary"
+        onclick="return confirmLogout();">
+
+        <i class="fa fa-sign-out"></i>
+        Log Out
+
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+  document.getElementById('profileForm')?.addEventListener('submit', function () {
+
+    var btn = document.getElementById('saveProfileBtn');
+
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = '0.8';
+      btn.innerHTML =
+        '<i class="fa fa-spinner fa-spin"></i> Saving...';
+    }
+
+  });
+</script>
+
+{% endblock %}

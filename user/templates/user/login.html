@@ -1,0 +1,40 @@
+{% extends "user/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="auth-container">
+
+  <div class="auth-card">
+
+    <h2 class="auth-title">
+      Sign In
+    </h2>
+
+    <p class="auth-subtitle">
+      Welcome back! Please sign in to your account.
+    </p>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      {{ form|crispy }}
+
+      <button type="submit"
+              class="btn btn-custom-primary">
+        Sign In
+      </button>
+    </form>
+
+    <p class="auth-footer">
+      Don't have an account?
+      <a href="{% url 'register' %}">
+        Create an account
+      </a>
+    </p>
+
+  </div>
+
+</div>
+
+{% endblock %}

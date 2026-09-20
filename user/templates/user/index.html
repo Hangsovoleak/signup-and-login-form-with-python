@@ -1,0 +1,67 @@
+{% extends "user/base.html" %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-8 col-md-offset-2">
+
+    <div class="hero-card text-center">
+
+      {% if user.is_authenticated %}
+
+        <h1 class="hero-title">
+          Welcome back, {{ user.username }}
+        </h1>
+
+        <p class="hero-subtitle">
+          You are securely signed into your account.
+        </p>
+
+        <a href="{% url 'profile' %}"
+           class="btn btn-custom-primary js-loading-btn">
+
+          <i class="fa fa-user"></i>
+          View Profile
+
+        </a>
+
+      {% else %}
+
+        <h1 class="hero-title">
+          Welcome to the Platform
+        </h1>
+
+        <p class="hero-subtitle">
+          Please log in to manage your account and access
+          your personalized workspace.
+        </p>
+
+        <div style="margin-top: 20px;">
+
+          <a href="{% url 'login' %}"
+             class="btn btn-custom-primary js-loading-btn"
+             style="margin-right: 10px;">
+
+            Log In
+
+          </a>
+
+          <a href="{% url 'register' %}"
+             class="btn btn-custom-secondary">
+
+            Create Account
+
+          </a>
+
+        </div>
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
